@@ -29,7 +29,7 @@ func (controller *AlbumController) getAlbums(c *gin.Context) {
 	// }
 	albums, err := controller.AlbumService.GetAll();
 	if(err != nil){
-		
+		c.JSON(http.StatusInternalServerError, err)
 	}
 
 	c.JSON(http.StatusOK, albums)

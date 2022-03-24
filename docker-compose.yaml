@@ -1,7 +1,20 @@
 version: '3.3'
 services:
-  db:
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recordings_api
+    ports:
+      - 9090:9090
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./.env:/app/.env
+  mysql:
     image: mysql:5.7
+    container_name: recordings_api_mysql
     restart: always
     environment:
       MYSQL_DATABASE: 'recordings'
@@ -13,9 +26,9 @@ services:
     expose:
       - '3306'
     volumes:
-      - my-db:/var/lib/mysql
       - "./scripts/db/schema.sql:/docker-entrypoint-initdb.d/1.sql"
       - "./scripts/db/seed.sql:/docker-entrypoint-initdb.d/2.sql"
-# Names our volume
-volumes:
-  my-db:
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10

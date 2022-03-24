@@ -78,6 +78,7 @@ func main() {
 	router := gin.Default()
 
 	//Get Env variables
+	serverPort := os.Getenv("SERVER_PORT")
 	dbdriver := os.Getenv("DB_DRIVER")
 	host := os.Getenv("DB_HOST")
 	password := os.Getenv("DB_PASSWORD")
@@ -97,5 +98,5 @@ func main() {
 	albumController := controllers.NewAlbumController(&albumService)
 	albumController.Route(router)
 
-	router.Run("localhost:8080")
+	router.Run(serverPort)
 }
