@@ -1,1 +1,1 @@
-Simple Golang RestAPI  exploring DDD
+Simple Golang RestAPI
